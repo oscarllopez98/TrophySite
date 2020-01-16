@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h1 class="mb-3">Results for: {{ form.username.data }} ({{ users|length }})</h1>
+	{% for user in users %}
+		<article class="media content-section bg-dark text-white">
+			<img class="rounded-circle article-img" src="{{ url_for('static',filename='profile_pics/'+user.image_file) }}">
+			<div class="mt-2 ml-3 username text-large">
+				<a class="username" href="{{ url_for('users.user_posts', username=user.username) }}">{{ user.username }}</a>				
+			</div>
+		</article>
+	{% endfor %}
+{% endblock content %}
