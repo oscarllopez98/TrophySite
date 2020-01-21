@@ -23,7 +23,6 @@ def about():
 #Takes user to the Search Page
 @main.route('/search', methods=['GET','POST'])
 def search():
-	print ("search")
 	form = SearchForm()
 	if form.validate_on_submit() and request.method == 'POST':
 		#Get username that was inputted into the form
@@ -39,4 +38,9 @@ def search():
 			return redirect(url_for('main.search'))
 
 	#Else, user has not submitted the form, so display search page
-	return render_template('search.html', title='Search', form=form)	
+	return render_template('search.html', title='Search', form=form)
+
+#Takes user to the Search Page
+@main.route('/admin', methods=['GET','POST'])
+def admin():
+	return render_template('admin.html', title='Admin')
