@@ -1,4 +1,5 @@
-from flask import render_template, request, Blueprint, flash, redirect,url_for
+from flask import render_template, request, Blueprint, flash, redirect, url_for, abort
+from flask_login import current_user, login_required
 from trophy.main.forms import SearchForm
 from trophy.models import User, Post
 
@@ -6,8 +7,6 @@ main = Blueprint('main',__name__)
 
 #Keeping this above the Home Page Route returns the same page!
 @main.route('/')
-
-#Takes user to the same page as the above Route
 @main.route('/home')
 def home():
 	page = request.args.get('page', 1,type=int)
@@ -40,7 +39,13 @@ def search():
 	#Else, user has not submitted the form, so display search page
 	return render_template('search.html', title='Search', form=form)
 
-#Takes user to the Search Page
+#Takes user to the Admin Page
 @main.route('/admin', methods=['GET','POST'])
+@login_required
 def admin():
+
+	#If user is not an Admin, send the user to Forbidden Access page
+	if current_user.admin == False:
+		abort(403)
+
 	return render_template('admin.html', title='Admin')
