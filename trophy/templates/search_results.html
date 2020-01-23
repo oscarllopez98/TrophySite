@@ -1,11 +1,27 @@
 {% extends "layout.html" %}
 {% block content %}
-	<h1 class="mb-3">Results for: {{ form.username.data }} ({{ users|length }})</h1>
+	<h1 class="mb-3">Results for: {{ username }} ({{ users|length }})</h1>
 	{% for user in users %}
 		<article class="media content-section bg-dark text-white">
 			<img class="rounded-circle article-img" src="{{ url_for('static',filename='profile_pics/'+user.image_file) }}">
 			<div class="mt-2 ml-3 username text-large">
-				<a class="username" href="{{ url_for('users.user_posts', username=user.username) }}">{{ user.username }}</a>				
+				<form class="form-inline" method="POST" action="">
+					<div class="form-group">
+						<a class="username mr-5" href="{{ url_for('users.user_posts', username=user.username) }}">{{ user.username }}</a>
+						{% if current_user.is_authenticated and current_user.admin == True %}
+							{%if user.verified == False %}
+								<button type="submit" class="btn btn-success d-inline ml-5 my-1" name="VERIFY" value="{{user.username}}">Verify</button>
+							{% else %}
+								<button type="submit" class="btn btn-success d-inline ml-5 my-1" name="UNVERIFY" value="{{user.username}}">Unverify</button>
+							{% endif %}
+							{% if user.suspended == False %}
+								<button type="submit" class="btn btn-danger d-inline ml-5 my-1" name="SUSPEND" value="{{user.username}}">Suspend</button>
+							{% else %}
+								<button type="submit" class="btn btn-danger d-inline ml-5 my-1" name="UNSUSPEND" value="{{user.username}}">Unsuspend</button>
+							{% endif %}
+						{% endif %}
+					</div>
+				</form>
 			</div>
 		</article>
 	{% endfor %}
