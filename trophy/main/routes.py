@@ -50,29 +50,30 @@ def search_users(username):
 	#If users were found and a POST request was made, follow the changes
 	if users and request.method == 'POST':
 
-		print (request.form)
 		#Check is current user is an admin and if selected user is being verified/unverified or suspended/unsuspended
+		#If admin wants to verify a user
 		if current_user.admin == True and request.form.get('VERIFY') is not None:
-			print ("verify user")
 			user = User.query.filter_by(username=request.form.get('VERIFY')).first()
 			user.verified = 1
+
+		#If admin wants to unverify a user
 		elif current_user.admin == True and request.form.get('UNVERIFY') is not None:
-			print ("unverify user")
 			user = User.query.filter_by(username=request.form.get('UNVERIFY')).first()
 			user.verified = 0
+
+		#If admin wants to suspend a user
 		elif current_user.admin == True and request.form.get('SUSPEND') is not None:
-			print ("suspend user")
 			user = User.query.filter_by(username=request.form.get('SUSPEND')).first()
 			user.suspended = 1
+
+		#If admin wants to unsuspend a user
 		elif current_user.admin == True and request.form.get('UNSUSPEND') is not None:
-			print ("unsuspend user")
 			user = User.query.filter_by(username=request.form.get('UNSUSPEND')).first()
 			user.suspended = 0
 		db.session.commit()
-		print (user)
 
+		#Render search results to the user
 	return render_template('search_results.html', title='Search Results', users=users, username=username)
-
 
 #Takes user to the Admin Page
 @main.route('/admin', methods=['GET','POST'])

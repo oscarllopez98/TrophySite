@@ -7,6 +7,8 @@
 			<div class="mt-2 ml-3 username text-large">
 				<form class="form-inline" method="POST" action="">
 					<div class="form-group">
+
+
 						<a class="username mr-5" href="{{ url_for('users.user_posts', username=user.username) }}">{{ user.username }}</a>
 						{% if current_user.is_authenticated and current_user.admin == True %}
 							{%if user.verified == False %}
@@ -20,6 +22,11 @@
 								<button type="submit" class="btn btn-danger d-inline ml-5 my-1" name="UNSUSPEND" value="{{user.username}}">Unsuspend</button>
 							{% endif %}
 						{% endif %}
+
+						<div>
+							
+						</div>
+
 					</div>
 				</form>
 			</div>
