@@ -86,3 +86,16 @@ a.article-title:hover {
   font-size: 180%;
 }
 
+.add-circle-outline {
+  width: 100%;
+  height: 100%;
+}
+
+.testing {
+  border: solid;
+  border-color: red;
+}
+
+.center-nav {
+  text-align: center;
+}
