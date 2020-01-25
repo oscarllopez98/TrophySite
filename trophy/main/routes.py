@@ -1,13 +1,13 @@
-from flask import render_template, request, Blueprint, flash, redirect,url_for
+from flask import render_template, request, Blueprint, flash, redirect, url_for, abort
+from flask_login import current_user, login_required
 from trophy.main.forms import SearchForm
 from trophy.models import User, Post
+from trophy import db
 
 main = Blueprint('main',__name__)
 
 #Keeping this above the Home Page Route returns the same page!
 @main.route('/')
-
-#Takes user to the same page as the above Route
 @main.route('/home')
 def home():
 	page = request.args.get('page', 1,type=int)
@@ -21,22 +21,67 @@ def about():
     return render_template('about.html', title='About')
 
 #Takes user to the Search Page
-@main.route('/search', methods=['GET','POST'])
+@main.route('/search/', methods=['GET','POST'])
 def search():
-	print ("search")
 	form = SearchForm()
 	if form.validate_on_submit() and request.method == 'POST':
-		#Get username that was inputted into the form
-		user = form.username.data
-		#Get all users that have the username within theirs
-		users = User.query.filter(User.username.contains(str(user))).all()
-		#If users were found, send this information to the search_results template
+		#Query all the users that have a username which contains the entered value in the form
+		users = User.query.filter(User.username.contains(str(form.username.data))).all()
+
+		#If users were found in query, send to search results page for the searched user
 		if users:
-			return render_template('search_results.html', title='Search Results', form=form, users=users)
-		#Else, no users were found, display error message and redirect to search page
+			return redirect(url_for('main.search_users', username=form.username.data))
+		#If users were not found in query, display warning message and reload page
 		else:
 			flash(f'No Results Found','danger')
 			return redirect(url_for('main.search'))
 
-	#Else, user has not submitted the form, so display search page
-	return render_template('search.html', title='Search', form=form)	
+	#If a get request was made and the form was not submitted, then just show the default search page
+	return render_template('search.html', title='Search', form=form)
+
+
+#Takes user to the searched user results, if any were found
+@main.route('/search/<string:username>', methods=['GET','POST'])
+def search_users(username):
+
+	#Get the users that contain the searched username within their username
+	users = User.query.filter(User.username.contains(str(username))).all()
+
+	#If users were found and a POST request was made, follow the changes
+	if users and request.method == 'POST':
+
+		#Check is current user is an admin and if selected user is being verified/unverified or suspended/unsuspended
+		#If admin wants to verify a user
+		if current_user.admin == True and request.form.get('VERIFY') is not None:
+			user = User.query.filter_by(username=request.form.get('VERIFY')).first()
+			user.verified = 1
+
+		#If admin wants to unverify a user
+		elif current_user.admin == True and request.form.get('UNVERIFY') is not None:
+			user = User.query.filter_by(username=request.form.get('UNVERIFY')).first()
+			user.verified = 0
+
+		#If admin wants to suspend a user
+		elif current_user.admin == True and request.form.get('SUSPEND') is not None:
+			user = User.query.filter_by(username=request.form.get('SUSPEND')).first()
+			user.suspended = 1
+
+		#If admin wants to unsuspend a user
+		elif current_user.admin == True and request.form.get('UNSUSPEND') is not None:
+			user = User.query.filter_by(username=request.form.get('UNSUSPEND')).first()
+			user.suspended = 0
+		db.session.commit()
+
+		#Render search results to the user
+	return render_template('search_results.html', title='Search Results', users=users, username=username)
+
+#Takes user to the Admin Page
+@main.route('/admin', methods=['GET','POST'])
+@login_required
+def admin():
+
+	#If user is not an Admin, send the user to Forbidden Access page
+	if current_user.admin == False:
+		abort(403)
+
+	return render_template('admin.html', title='Admin')
