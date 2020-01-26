@@ -33,35 +33,6 @@
 					{% endif %}
 				</form>
 			</div>
-		<article class="media content-section bg-dark text-white row-sm-12">
-
-			<div class="mt-1 ml-2 mr-4 col-sm-{%if current_user.admin==True%}{{5}}{%else%}{{12}}{%endif%}">
-				<img class="rounded-circle article-img" src="{{ url_for('static',filename='profile_pics/'+user.image_file) }}">
-				<a class="username text-large" href="{{ url_for('users.user_posts', username=user.username) }}">{{ user.username }}</a>	
-			</div>
-			{% if current_user.is_authenticated and current_user.admin == True %}
-				<div class="mt-1 ml-3 col-sm-7">
-					<form class="form-inline" method="POST" action="">
-						<div class="form-group row-sm-12 mt-2">			
-							<div class="col-sm-6">
-								{%if user.verified == False %}
-									<button type="submit" class="btn btn-success d-inline ml-5 my-1" name="VERIFY" value="{{user.username}}">Verify</button>
-								{% else %}
-									<button type="submit" class="btn btn-success d-inline ml-5 my-1" name="UNVERIFY" value="{{user.username}}">Unverify</button>
-								{% endif %}
-							</div>			
-							<div class="col-sm-6">
-								{% if user.suspended == False %}
-									<button type="submit" class="btn btn-danger d-inline ml-5 my-1" name="SUSPEND" value="{{user.username}}">Suspend</button>
-								{% else %}
-									<button type="submit" class="btn btn-danger d-inline ml-5 my-1" name="UNSUSPEND" value="{{user.username}}">Unsuspend</button>
-								{% endif %}
-							</div>
-						</div>
-					</form>
-				</div>
-			{% endif %}
->>>>>>> Stashed changes
 		</article>
 	{% endfor %}
 {% endblock content %}
