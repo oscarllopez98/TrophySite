@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='main.css') }}">
-
+	<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 	{% if title %}
 		<title>Trophy - {{ title }}</title>
 	{% else %}
@@ -32,14 +32,14 @@
 	        	{% endif %}
 	        	<a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
 	        	<a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
-	        	<a class="nav-item nav-link" href="{{ url_for('main.search') }}">Search</a>	          
+	        	<a class="nav-item nav-link nav-padding-top" href="{{ url_for('main.search') }}"><i class="material-icons">search</i>Search</a>	          
 	        </div>
 
 	        <!-- Navbar Right Side -->
 	        <div class="navbar-nav">
 	        	{% if current_user.is_authenticated %}
-        			<a class="nav-item nav-link pb-0" href="{{ url_for('posts.new_post') }}">
-        				<i class="material-icons">add_circle_outline</i>
+        			<a class="nav-item nav-link nav-padding-top" href="{{ url_for('posts.new_post') }}">
+        				<i class="material-icons">add_circle_outline</i>New Post
         			</a>
 	        		<a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
 	        		<a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
@@ -69,11 +69,11 @@
 				{% endblock %}	
 			</div>
 			<div class="col-md-4">
-				<div class="content-section bg-dark">
-					<h3 class="text-white">Our Sidebar</h3>
+				<div class="content-section bg-cadetblue">
+					<h3 class="text-white text-center">Our Sidebar</h3>
 					<ul class="list-group">
-						<li class="list-group-item list-group-item-dark">Announcements</li>
-						<li class="list-group-item list-group-item-dark">Calendars</li>
+						<li class="list-group-item list-group-item-light">Announcements</li>
+						<li class="list-group-item list-group-item-light">Calendars</li>
 					</ul>
 				</div>
 			</div>

@@ -26,7 +26,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .content-section {
   padding: 10px 20px;
-  border: 1px solid #dddddd;
   border-radius: 25px;
   margin-bottom: 20px;
 }
@@ -94,4 +93,16 @@ a.article-title:hover {
 .testing {
   border: solid;
   border-color: red;
+}
+
+.update-profile-pic {
+
+}
+
+.cadet-blue {
+  color: cadetblue;
+}
+
+.nav-padding-top {
+  padding-top: 1%
 }

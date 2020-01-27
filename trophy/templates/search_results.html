@@ -6,26 +6,27 @@
 
 			<div class="mt-1 ml-2 col-sm-5">
 				<img class="rounded-circle article-img" src="{{ url_for('static',filename='profile_pics/'+user.image_file) }}">
-				<a class="username text-large" href="{{ url_for('users.user_posts', username=user.username) }}">{{ user.username }}</a>	
+				<a class="username text-large" href="{{ url_for('users.user_posts', username=user.username) }}">{{ user.username }}</a>
+				<i class="fas fa-trophy"></i>
 			</div>
 
-			<div class="ml-3 col-sm-7">
+			<div class="ml-5 col-sm-7 mt-1">
 				<form class="form-inline" method="POST" action="">
 					{% if current_user.is_authenticated and current_user.admin == True %}
-						<div class="form-group row-sm-12 mt-2">			
+						<div class="form-group row-sm-12 mt-2 ml-5 text-right">			
 
 							<div class="col-sm-6">
 								{%if user.verified == False %}
-									<button type="submit" class="btn btn-success d-inline ml-5 my-1" name="VERIFY" value="{{user.username}}">Verify</button>
+									<button type="submit" class="btn btn-success d-inline my-1" name="VERIFY" value="{{user.username}}">Verify</button>
 								{% else %}
-									<button type="submit" class="btn btn-success d-inline ml-5 my-1" name="UNVERIFY" value="{{user.username}}">Unverify</button>
+									<button type="submit" class="btn btn-outline-success d-inline my-1" name="UNVERIFY" value="{{user.username}}">Unverify</button>
 								{% endif %}
 							</div>			
 							<div class="col-sm-6">
 								{% if user.suspended == False %}
-									<button type="submit" class="btn btn-danger d-inline ml-5 my-1" name="SUSPEND" value="{{user.username}}">Suspend</button>
+									<button type="submit" class="btn btn-danger d-inline my-1" name="SUSPEND" value="{{user.username}}">Suspend</button>
 								{% else %}
-									<button type="submit" class="btn btn-danger d-inline ml-5 my-1" name="UNSUSPEND" value="{{user.username}}">Unsuspend</button>
+									<button type="submit" class="btn btn-outline-danger d-inline my-1" name="UNSUSPEND" value="{{user.username}}">Unsuspend</button>
 								{% endif %}
 							</div>
 
