@@ -20,35 +20,60 @@
 
 	<header class="site-header">
 	  <nav class="navbar navbar-expand-md navbar-dark bg-cadetblue fixed-top">
-	    <div class="container">
-	    	<a class="navbar-brand mr-4" href="/">Trophy</a>
+	  	<a class="navbar-brand mr-4" href="/">Trophy</a>
+	    <div class="container nav-container">
 	    	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
 	    		<span class="navbar-toggler-icon"></span>
 	    	</button>
-	      <div class="collapse navbar-collapse" id="navbarToggle">
-	        <div class="navbar-nav mr-auto">
+	    	<div class="collapse navbar-collapse" id="navbarToggle">
+	    		<div class="navbar-nav mr-auto">
 	        	{% if current_user.admin == True %}
-	        		<a class="nav-item nav-link" href="{{url_for('main.admin')}}">Admin</a>
-	        	{% endif %}
-	        	<a class="nav-item nav-link" href="{{ url_for('main.home') }}">Home</a>
-	        	<a class="nav-item nav-link" href="{{ url_for('main.about') }}">About</a>
-	        	<a class="nav-item nav-link nav-padding-top" href="{{ url_for('main.search') }}"><i class="material-icons">search</i>Search</a>	          
-	        </div>
+	        		<a class="nav-item nav-link text-center nav-link-height" href="{{url_for('main.admin')}}">
+	        			<i class="material-icons nav-item-member">https</i>
+	        			<p class="nav-item-member">Admin</p>
+	        		</a>
+		        {% endif %}
+		        	<a class="nav-item nav-link text-center nav-link-height" href="{{ url_for('main.home') }}">
+		        		<i class="material-icons nav-item-member">home</i>
+		        		<p class="nav-item-member">Home</p>
+		        	</a>
+		        	<a class="nav-item nav-link text-center nav-link-height" href="{{ url_for('main.about') }}">
+		        		<i class="material-icons nav-item-member">book</i>
+		        		<p class="nav-item-member">About</p>
+		        	</a>
+		        	<a class="nav-item nav-link text-center nav-link-height" href="{{ url_for('main.search') }}">
+		        		<i class="material-icons nav-item-member">search</i>
+		        		<p class="nav-item-member">Search</p>
+		        	</a>	          
+	        	</div>
 
-	        <!-- Navbar Right Side -->
-	        <div class="navbar-nav">
+		        <!-- Navbar Right Side -->
+		        <div class="navbar-nav">
 	        	{% if current_user.is_authenticated %}
-        			<a class="nav-item nav-link nav-padding-top" href="{{ url_for('posts.new_post') }}">
-        				<i class="material-icons">add_circle_outline</i>New Post
+        			<a class="nav-item nav-link text-center nav-link-height" href="{{ url_for('posts.new_post') }}">
+        				<i class="material-icons nav-item-member">add_circle_outline</i>
+        				<p class="nav-item-member">New Post</p>
         			</a>
-	        		<a class="nav-item nav-link" href="{{ url_for('users.account') }}">Account</a>
-	        		<a class="nav-item nav-link" href="{{ url_for('users.logout') }}">Logout</a>
+	        		<a class="nav-item nav-link text-center nav-link-height" href="{{ url_for('users.account') }}">
+	        			<i class="material-icons nav-item-member">person</i>
+	        			<p class="nav-item-member">Account</p>
+	        		</a>
+	        		<a class="nav-item nav-link text-center nav-link-height" href="{{ url_for('users.logout') }}">
+	        			<i class="material-icons nav-item-member">power_off</i>
+	        			<p class="nav-item-member">Logout</p>
+	        		</a>
 	        	{% else %}
-	          		<a class="nav-item nav-link" href="{{ url_for('users.login') }}">Login</a>
-	          		<a class="nav-item nav-link" href="{{ url_for('users.register') }}">Register</a>
+	          		<a class="nav-item nav-link text-center nav-link-height" href="{{ url_for('users.login') }}">
+	          			<i class="material-icons nav-item-member">power</i>
+	          			<p class="nav-item-member">Login</p>
+	          		</a>
+	          		<a class="nav-item nav-link text-center nav-link-height" href="{{ url_for('users.register') }}">
+	          			<i class="material-icons nav-item-member">assignment</i>
+	          			<p class="nav-item-member">Register</p>
+	          		</a>
 	          	{% endif %}
-	        </div>
-	      </div>
+		        </div>
+	      	</div>
 	    </div>
 	  </nav>
 	</header>
@@ -69,7 +94,7 @@
 				{% endblock %}	
 			</div>
 			<div class="col-md-4">
-				<div class="content-section bg-cadetblue">
+				<div class="content-section bg-dark">
 					<h3 class="text-white text-center">Our Sidebar</h3>
 					<ul class="list-group">
 						<li class="list-group-item list-group-item-light">Announcements</li>
@@ -85,7 +110,6 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-	<script src="{{ url_for('static',filename='main.css') }}" type="text/javascript"></script>
 	{% block scripts %}
 	{% endblock scripts %}
 </body>

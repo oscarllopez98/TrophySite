@@ -1,10 +1,9 @@
 {% extends "layout.html" %}
 {% block content %}
 
-<div class="content-section">
+<div class="">
 	<form method="POST" action="">
 		{{ form.hidden_tag() }}
-
 		<fieldset class="form-group">
 			<legend class="border-bottom mb-4">{{ legend }}</legend>
 			<div class="form-group">
@@ -38,10 +37,137 @@
 				{% endif %}
 			</div>
 		</fieldset>
-		<div class="form-group">
-			{{ form.submit(class="btn btn-outline-info") }}
+		<div class="form-group row add-content">
+			<div class="col-6 btn-post">
+				{{ form.submit(class="btn-post btn btn-outline-info") }}
+			</div>
+			<div class="col-6 btn-add-files-post">
+				<input id="add-files" class="btn-add-files" type="file" multiple>
+				<button id="fake-btn-files" class="btn-outline-info fake-btn-add-files"type="button" onclick="document.getElementById('add-files').click();">Upload File(s)</button>
+			</div>
+		</div>
+		<div class="selected-files">
+			<table class="media-table">
+				<tr>
+					<td id="image-0"></td>
+					<td id="image-1"></td>
+					<td id="image-2"></td>
+					<td id="image-3"></td>
+				</tr>
+				<tr>
+					<td id="image-4"></td>
+					<td id="image-5"></td>
+					<td id="image-6"></td>
+					<td id="image-7"></td>
+				</tr>
+			</table>
+
 		</div>
 	</form>
 </div>
+<div id="photo-limit-warning" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content modal-content-warning">
+      <p class="lead p-3">Too many photos. You can only have up to 8 photos at a time.</p>
+    </div>
+  </div>
+</div>
+<div id="media-type-warning" class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content modal-content-warning">
+      <p class="lead p-3">Invalid media type. Only images and videos are allowed to be uploaded.</p>
+    </div>
+  </div>
+</div>
 
 {% endblock content%}
+{% block scripts %}
+<script type="text/javascript">
+
+	//Call function when the user is attempting to upload file(s)
+	$("#add-files").change(function(){
+		//Check that user has not tried to upload more than 8 photo
+		if (this.files.length > 8){
+			$('#photo-limit-warning').modal();
+			return;
+		}
+		else {
+			//For the amount of files being uploaded
+			for (var i = 0; i < this.files.length; i++){
+				//Check that media type is an image or a video
+				if (isImage(this.files.item(i).name) || isVideo(this.files.item(i).name)){
+					readURL(this, i);
+				}
+				else{
+					$('#media-type-warning').modal();
+					return;
+				}//else
+			}//for
+		}//else
+	});//#add-files
+
+	//Read the URL of the user uploaded files
+    function readURL(input, i) {
+        if (input.files && input.files[0]) {
+    		console.log(i + " element is starting")
+    		var reader = new FileReader();
+
+    		//On load, show the uploaded image(s)
+            reader.onload = function (e) {
+
+            	//If the user is uploading an image
+            	if (isImage(input.files.item(i).name)){
+            		//Image element with appropriate attributes to display to the user
+            		var img_atts = "<img id=\"selected-image-"+i+ "\" class=\"img-thumbnail add-pic\" src=\"\">";
+
+            		//Upload to image table, add image url to its element, then make that element visible 
+            		$('#image-'+i).append(img_atts);            		
+                	$('#selected-image-'+i).attr('src', e.target.result);
+                	$('#selected-image-'+i).show();
+            	}
+            	//Else the user is uploading a video
+            	else {
+
+            	}
+                console.log(e);
+            }
+            reader.readAsDataURL(input.files[i]);
+        }
+	}	
+
+	//Get Extension of a file
+	function getExtension(filename) {
+    	var parts = filename.split('.');
+    	return parts[parts.length - 1];
+	}//getExtension
+
+	//Validate that file is of image type
+	function isImage(filename) {
+	    var ext = getExtension(filename);
+	    switch (ext.toLowerCase()) {
+		    case 'jpg':
+		    case 'gif':
+		    case 'bmp':
+		    case 'png':
+		    	return true;
+	    }//switch
+	    return false;
+	}//isImage
+
+	//Validate that file is of video type
+	function isVideo(filename) {
+	    var ext = getExtension(filename);
+	    switch (ext.toLowerCase()) {
+		    case 'm4v':
+		    case 'avi':
+		    case 'mpg':
+		    case 'mp4':
+		    case 'mp3':
+		    case 'mov':
+		        return true;
+	    }//switch
+	    return false;
+	}//isVideo
+
+</script>
+{% endblock scripts%}
