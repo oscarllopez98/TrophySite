@@ -121,13 +121,16 @@
             		var img_atts = "<img id=\"selected-image-"+i+ "\" class=\"img-thumbnail add-pic\" src=\"\">";
 
             		//Upload to image table, add image url to its element, then make that element visible 
-            		$('#image-'+i).append(img_atts);            		
+            		$('#image-'+i).append(img_atts);
+
                 	$('#selected-image-'+i).attr('src', e.target.result);
                 	$('#selected-image-'+i).show();
+
+					//Fix orientation
+            		fixExifOrientation($('#image-'+i));
             	}
             	//Else the user is uploading a video
             	else {
-
             	}
                 console.log(e);
             }
@@ -169,5 +172,32 @@
 	    return false;
 	}//isVideo
 
+	function fixExifOrientation($img) {
+		console.log('Exif');
+		console.log($img);
+		$img.on('load', function() {
+			console.log('Exif 2');
+			EXIF.getData($img[0], function() {
+				console.log('Exif=', EXIF.getTag(this, "Orientation"));
+				switch(parseInt(EXIF.getTag(this, "Orientation"))) {
+					case 2:
+					$img.addClass('flip'); break;
+					case 3:
+					$img.addClass('rotate-180'); break;
+					case 4:
+					$img.addClass('flip-and-rotate-180'); break;
+					case 5:
+					$img.addClass('flip-and-rotate-270'); break;
+					case 6:
+                    $img.addClass('rotate-90'); break;
+                    case 7:
+                    $img.addClass('flip-and-rotate-90'); break;
+                    case 8:
+                    $img.addClass('rotate-270'); break;
+                }
+            });
+		});
+	}
 </script>
+
 {% endblock scripts%}
