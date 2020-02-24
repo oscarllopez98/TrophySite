@@ -3,7 +3,7 @@
 
 
 # DIRECTORIES
-trophy : This directory holds all other directoies as well as the .py to run the program
+trophy : This directory holds all other directories as well as the .py to run the program
 
 - errors
 
